@@ -3,6 +3,7 @@ from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
+from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.chrome.options import Options
 from bs4 import BeautifulSoup
 import pandas as pd
@@ -68,7 +69,16 @@ def main():
             n = math.ceil(total_listings / 25)
             
             # Initialize WebDriver in headless mode
-            driver = webdriver.Chrome()
+            # Configure Chrome options
+            chrome_options = Options()
+            chrome_options.add_argument("--headless")  # Run headless
+            chrome_options.add_argument("--no-sandbox")
+            chrome_options.add_argument("--disable-dev-shm-usage")
+            chrome_options.add_argument("--disable-gpu")  # Applicable to Windows OS
+            chrome_options.add_argument("--window-size=1920x1080")  # Set the window size for headless mode
+
+            # Initialize WebDriver with options
+            driver = webdriver.Chrome(service=Service(), options=chrome_options)
             
             all_listings = []
 
